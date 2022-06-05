@@ -1,6 +1,6 @@
 package com.spruhs.apothek.persistence;
 
-import com.spruhs.apothek.business.Medication;
+import com.spruhs.apothek.business.medication.Medication;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.spruhs.apothek.business;
+package com.spruhs.apothek.business.medication;
 
 import lombok.Data;
 

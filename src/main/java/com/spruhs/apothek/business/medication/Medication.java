@@ -1,4 +1,4 @@
-package com.spruhs.apothek.business;
+package com.spruhs.apothek.business.medication;
 
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "medication") //TODO configure Database
+@Table(name = "medication")
 public class Medication {
 
     @Id
