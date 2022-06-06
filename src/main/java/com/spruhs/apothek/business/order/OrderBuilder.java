@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderBuilder {
 
-
     public OrderJPA orderMapper(RequestOrder requestOrder) {
         OrderJPA result = new OrderJPA();
         result.setStoreName(requestOrder.getStoreName());

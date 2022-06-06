@@ -6,7 +6,6 @@ import com.spruhs.apothek.business.medication.MedicationService;
 import com.spruhs.apothek.business.medication.NotEnoughMedicationInStock;
 import com.spruhs.apothek.business.order.RequestOrder;
 import com.spruhs.apothek.persistence.MedicationRepository;
-import com.spruhs.apothek.persistence.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 class MedicationServiceTest {
 
     @InjectMocks

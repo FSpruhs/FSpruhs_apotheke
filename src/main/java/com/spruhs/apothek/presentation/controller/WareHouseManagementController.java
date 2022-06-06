@@ -122,7 +122,7 @@ public class WareHouseManagementController {
         Iterable<OrderJPA> orders;
         try {
             if (date != null && storeName != null) {
-                orders = orderService.getOrderByDatStore(stringToLocaleDate(date), storeName);
+                orders = orderService.getOrderByDateAndStore(stringToLocaleDate(date), storeName);
             } else if (storeName != null) {
                 orders = orderService.getOrderByStoreName(storeName);
             } else {

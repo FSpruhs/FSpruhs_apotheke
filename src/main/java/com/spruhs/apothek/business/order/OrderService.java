@@ -1,7 +1,6 @@
 package com.spruhs.apothek.business.order;
 
 import com.spruhs.apothek.persistence.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,15 +14,14 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    @Autowired
     private final OrderRepository orderRepository;
 
-    @Autowired
-    OrderBuilder orderBuilder;
+    private final OrderBuilder orderBuilder;
 
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderBuilder orderBuilder) {
         this.orderRepository = orderRepository;
+        this.orderBuilder = orderBuilder;
     }
 
     /**
@@ -38,7 +36,7 @@ public class OrderService {
     /**
      * Outputs Orders in the Database by date.
      *
-     * @param date date to find Orders.
+     * @param date date to find Orders. Format YYYY-MM-DD
      * @return Iterable wit all Orders from the date.
      * @throws OrderNotFound if no Orders found.
      */
@@ -71,11 +69,11 @@ public class OrderService {
      * Outputs Orders in the Database by the store name and date.
      *
      * @param storeName storeName to find Orders.
-     * @param date date to find Orders.
+     * @param date date to find Orders. Format YYYY-MM-DD
      * @return Iterable wit all Orders from the store and date.
      * @throws OrderNotFound if no Orders found.
      */
-    public Iterable<OrderJPA> getOrderByDatStore(LocalDate date, String storeName) throws OrderNotFound {
+    public Iterable<OrderJPA> getOrderByDateAndStore(LocalDate date, String storeName) throws OrderNotFound {
         List<OrderJPA> listMedication = orderRepository.findByDateAndStoreName(date, storeName);
         if (!listMedication.isEmpty()) {
             return listMedication;

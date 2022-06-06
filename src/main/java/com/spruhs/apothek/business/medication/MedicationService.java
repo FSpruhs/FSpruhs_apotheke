@@ -18,13 +18,13 @@ import java.util.Optional;
 @Service
 public class MedicationService {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public final MedicationRepository medicationRepository;
 
     @Autowired
-    public MedicationService(MedicationRepository medicationRepository) {
+    public MedicationService(ModelMapper modelMapper, MedicationRepository medicationRepository) {
+        this.modelMapper = modelMapper;
         this.medicationRepository = medicationRepository;
     }
 

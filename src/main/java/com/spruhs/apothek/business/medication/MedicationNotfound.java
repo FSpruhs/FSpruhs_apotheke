@@ -1,7 +1,7 @@
 package com.spruhs.apothek.business.medication;
 
 /**
- * @Author Fabian Sprus
+ * @Author Fabian Spruhs
  * @Version 1.0
  */
 public class MedicationNotfound extends Exception {
