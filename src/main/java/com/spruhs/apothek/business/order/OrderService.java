@@ -1,15 +1,10 @@
 package com.spruhs.apothek.business.order;
 
-import com.spruhs.apothek.business.medication.Medication;
-import com.spruhs.apothek.business.medication.MedicationDTO;
 import com.spruhs.apothek.persistence.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,12 +42,12 @@ public class OrderService {
      * @return Iterable wit all Orders from the date.
      * @throws OrderNotFound if no Orders found.
      */
-    public Iterable<Order> getOrderByDate(LocalDate date) throws OrderNotFound {
-        List<Order> listMedication = orderRepository.findByDate(date);
+    public Iterable<OrderJPA> getOrderByDate(LocalDate date) throws OrderNotFound {
+        List<OrderJPA> listMedication = orderRepository.findByDate(date);
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound();
+            throw new OrderNotFound("No such order Found!");
         }
     }
 
@@ -63,12 +58,12 @@ public class OrderService {
      * @return Iterable wit all Orders from the store.
      * @throws OrderNotFound if no Orders found.
      */
-    public Iterable<Order> getOrderByStoreName(String storeName) throws OrderNotFound {
-        List<Order> listMedication = orderRepository.findByStoreName(storeName);
+    public Iterable<OrderJPA> getOrderByStoreName(String storeName) throws OrderNotFound {
+        List<OrderJPA> listMedication = orderRepository.findByStoreName(storeName);
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound();
+            throw new OrderNotFound("No such order Found!");
         }
     }
 
@@ -80,12 +75,12 @@ public class OrderService {
      * @return Iterable wit all Orders from the store and date.
      * @throws OrderNotFound if no Orders found.
      */
-    public Iterable<Order> getOrderByDatStore(LocalDate date, String storeName) throws OrderNotFound {
-        List<Order> listMedication = orderRepository.findByDateAndStoreName(date, storeName);
+    public Iterable<OrderJPA> getOrderByDatStore(LocalDate date, String storeName) throws OrderNotFound {
+        List<OrderJPA> listMedication = orderRepository.findByDateAndStoreName(date, storeName);
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound();
+            throw new OrderNotFound("No such order Found!");
         }
     }
 
@@ -96,11 +91,11 @@ public class OrderService {
      * @throws OrderNotFound if order not found.
      */
     public void deleteById(Long id) throws OrderNotFound {
-        Optional<Order> optionalOrder = orderRepository.findById(id);
+        Optional<OrderJPA> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             orderRepository.deleteById(id);
         } else {
-            throw new OrderNotFound();
+            throw new OrderNotFound("No such order Found!");
         }
     }
 
@@ -112,12 +107,12 @@ public class OrderService {
      * @throws OrderNotFound if order not found.
      */
     public void updateStatus(Long id, OrderStatus orderStatus) throws OrderNotFound {
-        Optional<Order> optionalOrder = orderRepository.findById(id);
+        Optional<OrderJPA> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             optionalOrder.get().setOrderStatus(orderStatus);
             orderRepository.save(optionalOrder.get());
         } else {
-            throw new OrderNotFound();
+            throw new OrderNotFound("No such order Found!");
         }
     }
 
@@ -126,7 +121,7 @@ public class OrderService {
      *
      * @return Iterable with all Orders in the Database.
      */
-    public Iterable<Order> getAllOrders() {
+    public Iterable<OrderJPA> getAllOrders() {
         return orderRepository.findAll();
     }
 }

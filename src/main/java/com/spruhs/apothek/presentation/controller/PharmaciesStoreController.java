@@ -1,13 +1,10 @@
 package com.spruhs.apothek.presentation.controller;
 
-import com.spruhs.apothek.business.medication.Medication;
 import com.spruhs.apothek.business.medication.MedicationNotfound;
 import com.spruhs.apothek.business.medication.MedicationService;
 import com.spruhs.apothek.business.medication.NotEnoughMedicationInStock;
-import com.spruhs.apothek.business.order.Order;
 import com.spruhs.apothek.business.order.OrderService;
 import com.spruhs.apothek.business.order.RequestOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,6 @@ import javax.validation.Valid;
  * @Author Fabian Spruhs
  * @Version 1.0
  */
-
 @RestController
 @RequestMapping("/pharmacy/store")
 public class PharmaciesStoreController {

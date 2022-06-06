@@ -4,11 +4,10 @@ package com.spruhs.apothek.presentation.controller;
 import com.spruhs.apothek.business.medication.Medication;
 import com.spruhs.apothek.business.medication.MedicationNotfound;
 import com.spruhs.apothek.business.medication.MedicationService;
-import com.spruhs.apothek.business.order.Order;
+import com.spruhs.apothek.business.order.OrderJPA;
 import com.spruhs.apothek.business.order.OrderNotFound;
 import com.spruhs.apothek.business.order.OrderService;
 import com.spruhs.apothek.business.order.OrderStatus;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
  * @Author Fabian Spruhs
  * @Version 1.0
  */
-
 @RestController
 @RequestMapping("/pharmacy/warehouse")
 public class WareHouseManagementController {
@@ -121,7 +119,7 @@ public class WareHouseManagementController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Iterable<Order> orders;
+        Iterable<OrderJPA> orders;
         try {
             if (date != null && storeName != null) {
                 orders = orderService.getOrderByDatStore(stringToLocaleDate(date), storeName);

@@ -18,7 +18,6 @@ import java.util.List;
  * @Author Fabian Spruhs
  * @Version 1.0
  */
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurerImpl {

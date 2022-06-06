@@ -5,8 +5,6 @@ import com.spruhs.apothek.business.order.RequestOrder;
 import com.spruhs.apothek.persistence.MedicationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -60,7 +58,7 @@ public class MedicationService {
         if (optionalMedication.isPresent()) {
             return  optionalMedication.get();
         } else {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         }
     }
 
@@ -76,7 +74,7 @@ public class MedicationService {
         if (!listMedication.isEmpty()) {
             return Arrays.asList(modelMapper.map(listMedication, MedicationDTO[].class));
         } else {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         }
     }
 
@@ -90,16 +88,16 @@ public class MedicationService {
      */
     public void order(RequestOrder order) throws MedicationNotfound, NotEnoughMedicationInStock {
         if (order.getNumber() < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Can not order a negative number!");
         }
         Optional<Medication> optionalMedication = medicationRepository.findById(order.getPharmaCentralNumber());
         if (optionalMedication.isEmpty()) {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         } else if (optionalMedication.get().getAvailable() > order.getNumber()) {
             optionalMedication.get().setAvailable(optionalMedication.get().getAvailable() - order.getNumber());
             medicationRepository.save(optionalMedication.get());
         } else {
-            throw new NotEnoughMedicationInStock();
+            throw new NotEnoughMedicationInStock("Not enough medicine in the Stock!");
         }
     }
 
@@ -112,7 +110,7 @@ public class MedicationService {
     public void deleteMedicationByName(String name) throws MedicationNotfound {
         List<Medication> medicationList = medicationRepository.findByNameIs(name);
         if (medicationList.isEmpty()) {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         } else {
             medicationRepository.deleteAll(medicationList);
         }
@@ -129,7 +127,7 @@ public class MedicationService {
         if (optionalMedication.isPresent()) {
             medicationRepository.deleteById(id);
         } else {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         }
     }
 
@@ -146,7 +144,7 @@ public class MedicationService {
             optionalMedication.get().setAvailable(optionalMedication.get().getAvailable() + number);
             medicationRepository.save(optionalMedication.get());
         } else {
-            throw new MedicationNotfound();
+            throw new MedicationNotfound("No such Medication found!");
         }
     }
 }

@@ -1,13 +1,11 @@
 package com.spruhs.apothek.business.order;
 
-import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 /**
@@ -18,8 +16,8 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orders") //TODO Ask Andreas
-public class Order {
+@Table(name = "orders")
+public class OrderJPA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

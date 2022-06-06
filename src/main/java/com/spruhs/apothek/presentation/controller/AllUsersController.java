@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @Author Fabian Spruhs
  * @Version 1.0
  */
-
 @RestController
 @RequestMapping("/pharmacy/allUsers")
 public class AllUsersController {

@@ -1,13 +1,17 @@
 package com.spruhs.apothek.business;
 
+import com.spruhs.apothek.business.medication.Medication;
+import com.spruhs.apothek.business.medication.MedicationNotfound;
+import com.spruhs.apothek.business.medication.MedicationService;
+import com.spruhs.apothek.business.medication.NotEnoughMedicationInStock;
+import com.spruhs.apothek.business.order.RequestOrder;
 import com.spruhs.apothek.persistence.MedicationRepository;
+import com.spruhs.apothek.persistence.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+
 class MedicationServiceTest {
 
     @InjectMocks
-    MedicationService medicationService;
+    MedicationService medicationServiceMock;
 
     @Mock
-    MedicationRepository medicationRepository;
+    MedicationRepository medicationRepositoryMock;
 
     Medication medication1 = new Medication(4324188,
             "Aspirin",
@@ -37,10 +42,15 @@ class MedicationServiceTest {
             "Ratiofarm",
             13);
 
+    RequestOrder order1 = new RequestOrder(4324188L, 1, "ApothekeTest");
+    RequestOrder order2 = new RequestOrder(4356188, 1000, "ApothekeTest1");
+    RequestOrder order3 = new RequestOrder(4324188, -1, "ApothekeTest2");
+
+
     @Test
     void createMedication() {
-        medicationService.createMedication(medication1);
-        verify(medicationRepository, times(1)).save(medication1);
+        medicationServiceMock.createMedication(medication1);
+        verify(medicationRepositoryMock, times(1)).save(medication1);
     }
 
     @Test
@@ -49,118 +59,111 @@ class MedicationServiceTest {
         list.add(medication1);
         list.add(medication2);
 
-        when(medicationRepository.findAll()).thenReturn(list);
+        when(medicationRepositoryMock.findAll()).thenReturn(list);
 
-        ResponseEntity<?> medicationResponse = medicationService.getAllMedications();
+        Iterable<Medication> medicationIterable = medicationRepositoryMock.findAll();
+        List<Medication> medicationList = new ArrayList<>();
+        medicationIterable.forEach(medicationList::add);
 
-        //assertEquals("[" + medication1.toString() + ", " + medication2.toString() + "]", medicationResponse.getBody());
-        assertEquals(HttpStatus.OK, medicationResponse.getStatusCode());
-        verify(medicationRepository, times(1)).findAll();
+        assertEquals(2, medicationList.size());
+        verify(medicationRepositoryMock, times(1)).findAll();
     }
 
     @Test
-    void getMedicationByIdSuccess() {
-        medicationRepository.save(medication1);
-        medicationService.createMedication(medication1);
+    void getMedicationByIdSuccess() throws MedicationNotfound {
 
-        //when(medicationRepository.findById(anyLong())).thenReturn(Optional.of(new Medication()));
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication1));
+        Medication medication = medicationServiceMock.getMedicationById(4324188L);
 
-        ResponseEntity<?> medicationResponse = medicationService.getMedicationById(medication1.getPharmaCentralNumber());
-
-        //assertEquals(HttpStatus.OK, medicationResponse.getStatusCode());
-        verify(medicationRepository, times(1)).findById(medication1.getPharmaCentralNumber());
+        assertEquals("Aspirin", medication.getName());
+        verify(medicationRepositoryMock, times(1)).findById(medication1.getPharmaCentralNumber());
 
     }
 
     @Test
-    void getMedicationByIdFailure() {
+    void getMedicationByIdFailure() throws MedicationNotfound {
 
-        ResponseEntity<?> medicationResponse = medicationService.getMedicationById(medication1.getPharmaCentralNumber());
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication1));
+        Medication medication = medicationServiceMock.getMedicationById(4324588L);
 
-        assertEquals(HttpStatus.NOT_FOUND, medicationResponse.getStatusCode());
-        verify(medicationRepository, times(1)).findById(medication1.getPharmaCentralNumber());
-
+        assertEquals("Aspirin", medication.getName());
+        verify(medicationRepositoryMock, times(0)).findById(medication1.getPharmaCentralNumber());
     }
 
     @Test
-    void getMedicationByNameSuccess() {
-        medicationRepository.save(medication1);
-        medicationService.createMedication(medication1);
-
-        //when(medicationRepository.findById(anyLong())).thenReturn(Optional.of(new Medication()));
-
-        ResponseEntity<?> medicationResponse = medicationService.getMedicationById(medication1.getPharmaCentralNumber());
-
-        //assertEquals(HttpStatus.OK, medicationResponse.getStatusCode());
-        verify(medicationRepository, times(1)).findById(medication1.getPharmaCentralNumber());
-
+    void deleteByIdSuccess() throws MedicationNotfound {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication1));
+        medicationServiceMock.deleteMedicationById(medication1.getPharmaCentralNumber());
+        verify(medicationRepositoryMock, times(1)).deleteById(medication1.getPharmaCentralNumber());
     }
 
     @Test
-    void getMedicationByNameFailure() {
-        ResponseEntity<?> medicationResponse = medicationService.getMedicationByName(medication1.getName());
+    void deleteByIdFailure() {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication2));
+        try {
+            medicationServiceMock.deleteMedicationById(medication1.getPharmaCentralNumber());
+        } catch (MedicationNotfound e) {
+            assertEquals(e.getMessage(), "No such Medication found!");
+        }
 
-        assertEquals(HttpStatus.NOT_FOUND, medicationResponse.getStatusCode());
-        verify(medicationRepository, times(1)).findByNameIs(medication1.getName());
+        verify(medicationRepositoryMock, times(1)).findById(medication1.getPharmaCentralNumber());
+        verify(medicationRepositoryMock, times(1)).deleteById(medication1.getPharmaCentralNumber());
     }
 
     @Test
-    void orderNegativeNumber() {
-        medicationRepository.save(medication1);
+    void updateMedicationSuccess() throws MedicationNotfound {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication1));
+        medicationServiceMock.updateMedication(4324188L, 1);
+        Optional<Medication> medication = medicationRepositoryMock.findById(medication1.getPharmaCentralNumber());
+        assertEquals(843, medication.get().getAvailable());
 
-        ResponseEntity<?> medicationResponse = medicationService.order(medication1.getPharmaCentralNumber(), -1);
-
-        assertEquals(HttpStatus.BAD_REQUEST, medicationResponse.getStatusCode());
-
+        verify(medicationRepositoryMock, times(2)).findById(medication1.getPharmaCentralNumber());
+        verify(medicationRepositoryMock, times(1)).save(medication1);
     }
 
     @Test
-    void orderSuccess() {
-        medicationRepository.save(medication1);
+    void updateMedicationFailure() {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication2));
+        try {
+            medicationServiceMock.updateMedication(medication1.getPharmaCentralNumber(), 1);
+        } catch (MedicationNotfound e) {
+            assertEquals(e.getMessage(), "No such Medication found!");
+        }
 
-        ResponseEntity<?> medicationResponse = medicationService.order(medication1.getPharmaCentralNumber(), 1);
-
-        //assertEquals(HttpStatus.OK, medicationResponse.getStatusCode());
-        Optional<Medication> medication = medicationRepository.findById(medication1.getPharmaCentralNumber());
-        //assertEquals(843, medication.get().getAvailable());
-
+        verify(medicationRepositoryMock, times(1)).findById(medication1.getPharmaCentralNumber());
+        verify(medicationRepositoryMock, times(0)).save(medication1);
     }
 
     @Test
-    void orderFailure() {
+    void orderMedicationSuccess() throws NotEnoughMedicationInStock, MedicationNotfound {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication1));
+        medicationServiceMock.order(order1);
+        Optional<Medication> medication = medicationRepositoryMock.findById(medication1.getPharmaCentralNumber());
+        assertEquals(medication1.getAvailable(), medication.get().getAvailable());
 
-        ResponseEntity<?> medicationResponse = medicationService.order(medication1.getPharmaCentralNumber(), 1);
-
-        assertEquals(HttpStatus.NOT_FOUND, medicationResponse.getStatusCode());
-
+        verify(medicationRepositoryMock, times(2)).findById(medication1.getPharmaCentralNumber());
+        verify(medicationRepositoryMock, times(1)).save(medication1);
     }
 
     @Test
-    void deleteMedicationByNameSuccess() {
-        medicationRepository.save(medication1);
+    void orderMedicationNotEnough() throws MedicationNotfound {
+        when(medicationRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(medication2));
+        try {
+            medicationServiceMock.order(order2);
+        } catch (NotEnoughMedicationInStock e) {
+            assertEquals(e.getMessage(), "Not enough medicine in the Stock!");
+        }
 
-        ResponseEntity<?> medicationResponse = medicationService.deleteMedicationByName(medication1.getName());
-
-        //assertEquals(HttpStatus.OK, medicationResponse.getStatusCode());
+        verify(medicationRepositoryMock, times(1)).findById(medication2.getPharmaCentralNumber());
     }
 
     @Test
-    void deleteMedicationByNameFailure() {
-        ResponseEntity<?> medicationResponse = medicationService.deleteMedicationById(medication1.getPharmaCentralNumber());
-
-        assertEquals(HttpStatus.NOT_FOUND, medicationResponse.getStatusCode());
-
+    void orderMedicationNegativeNumber() throws NotEnoughMedicationInStock, MedicationNotfound {
+        try {
+            medicationServiceMock.order(order3);
+        } catch (IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "Can not order a negative number!");
+        }
     }
 
-    @Test
-    void deleteMedicationByIdSuccess() {
-    }
-
-    @Test
-    void deleteMedicationByIdFailure() {
-    }
-
-    @Test
-    void updateMedication() {
-    }
 }
