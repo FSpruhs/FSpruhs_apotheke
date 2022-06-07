@@ -1,0 +1,706 @@
+{
+  "info": {
+    "_postman_id": "44baaed3-0e71-4c46-a0f7-74eac4da350b",
+    "name": "Apotheke",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20787439"
+  },
+  "item": [
+    {
+      "name": "AllUsers",
+      "item": [
+        {
+          "name": "medicationsStock",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/pharmacy/allUsers/medication/stock",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "allUsers",
+                "medication",
+                "stock"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medication by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/pharmacy/allUsers/medication/id/?id=04324188",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "allUsers",
+                "medication",
+                "id",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "04324188"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "medication by name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/pharmacy/allUsers/medication/name/?name=Ibuprofen",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "allUsers",
+                "medication",
+                "name",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Ibuprofen"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "WareHouse",
+      "item": [
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?name=Aspirin&number=5",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Aspirin"
+                },
+                {
+                  "key": "number",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete by name",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?name=Aspirin",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Aspirin"
+                },
+                {
+                  "key": "number",
+                  "value": "5",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?id=4356188",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "4356188"
+                },
+                {
+                  "key": "number",
+                  "value": "5",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all orders",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "warehouse",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"name\": \"Aspirin\", \n      \"ingredients\": \"DL-Lysinmono(acetylsalicylat)-Glycin\", \n      \"producer\": \"Bayer AG\", \n      \"pharmaCentralNumber\": \"04324188\", \n      \"available\": 842 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/order/all",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                "order",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create no 1",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"name\": \"Aspirin\", \n      \"ingredients\": \"DL-Lysinmono(acetylsalicylat)-Glycin\", \n      \"producer\": \"Bayer AG\", \n      \"pharmaCentralNumber\": \"04324188\", \n      \"available\": 842 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?name=Aspirin",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Aspirin"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create no 2",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"name\": \"Ibuprofen\", \n      \"ingredients\": \"Something\", \n      \"producer\": \"Ratiofarm\", \n      \"pharmaCentralNumber\": \"04356188\", \n      \"available\": 13 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?name=Aspirin",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Aspirin"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create no 3",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"name\": \"Ibuprofen\", \n      \"ingredients\": \"Something\", \n      \"producer\": \"Ratiofarm\", \n      \"pharmaCentralNumber\": \"04356188\", \n      \"available\": 13 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/warehouse/?name=Aspirin",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "warehouse",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Aspirin"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "all orders",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "order by date",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "Update the date to the date today. Format YYYY-MM-DD."
+          },
+          "response": []
+        },
+        {
+          "name": "orders by store name",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "orders by date and store name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "Update the date to the date today. Format YYYY-MM-DD."
+          },
+          "response": []
+        },
+        {
+          "name": "delete order",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "update order status",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "item": [
+        {
+          "name": "order no 1",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "store",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"storeName\": \"TestApotheke\", \n      \"pharmaCentralNumber\": 4324188, \n      \"number\": 5 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/store/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "order no 2",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "store",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"storeName\": \"TestApotheke\", \n      \"pharmaCentralNumber\": 4324188, \n      \"number\": 5 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/store/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "order no 3",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "store",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"storeName\": \"TestApotheke\", \n      \"pharmaCentralNumber\": 4324188, \n      \"number\": 5 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/store/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "order too much",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "store",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"storeName\": \"TestApotheke\", \n      \"pharmaCentralNumber\": 4324188, \n      \"number\": 5 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/store/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "order negative number",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "store",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n\"storeName\": \"TestApotheke\", \n      \"pharmaCentralNumber\": 4324188, \n      \"number\": 5 \n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/pharmacy/store/order",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "pharmacy",
+                "store",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -18,6 +18,8 @@ import java.util.Optional;
 @Service
 public class MedicationService {
 
+    private final String ERROR_MESSAGE_MEDICINE_NOT_FOUND = "No such Medication found!";
+
     private final ModelMapper modelMapper;
 
     public final MedicationRepository medicationRepository;
@@ -58,7 +60,7 @@ public class MedicationService {
         if (optionalMedication.isPresent()) {
             return  optionalMedication.get();
         } else {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         }
     }
 
@@ -74,7 +76,7 @@ public class MedicationService {
         if (!listMedication.isEmpty()) {
             return Arrays.asList(modelMapper.map(listMedication, MedicationDTO[].class));
         } else {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         }
     }
 
@@ -92,7 +94,7 @@ public class MedicationService {
         }
         Optional<Medication> optionalMedication = medicationRepository.findById(order.getPharmaCentralNumber());
         if (optionalMedication.isEmpty()) {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         } else if (optionalMedication.get().getAvailable() > order.getNumber()) {
             optionalMedication.get().setAvailable(optionalMedication.get().getAvailable() - order.getNumber());
             medicationRepository.save(optionalMedication.get());
@@ -110,7 +112,7 @@ public class MedicationService {
     public void deleteMedicationByName(String name) throws MedicationNotfound {
         List<Medication> medicationList = medicationRepository.findByNameIs(name);
         if (medicationList.isEmpty()) {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         } else {
             medicationRepository.deleteAll(medicationList);
         }
@@ -127,7 +129,7 @@ public class MedicationService {
         if (optionalMedication.isPresent()) {
             medicationRepository.deleteById(id);
         } else {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         }
     }
 
@@ -144,7 +146,7 @@ public class MedicationService {
             optionalMedication.get().setAvailable(optionalMedication.get().getAvailable() + number);
             medicationRepository.save(optionalMedication.get());
         } else {
-            throw new MedicationNotfound("No such Medication found!");
+            throw new MedicationNotfound(ERROR_MESSAGE_MEDICINE_NOT_FOUND);
         }
     }
 }

@@ -68,7 +68,7 @@ public class OrderServiceTest {
         try {
             orderService.getOrderByDate(LocalDate.parse("2020-01-01"));
         } catch (OrderNotFound e) {
-            assertEquals(e.getMessage(), "No such order Found!");
+            assertEquals(e.getMessage(), "No such Order Found!");
         }
 
         verify(orderRepository, times(0)).findByDate(LocalDate.now());
@@ -96,7 +96,7 @@ public class OrderServiceTest {
         try {
             orderService.getOrderByDate(LocalDate.parse("2020-01-01"));
         } catch (OrderNotFound e) {
-            assertEquals(e.getMessage(), "No such order Found!");
+            assertEquals(e.getMessage(), "No such Order found!");
         }
 
         verify(orderRepository, times(0)).findByDate(LocalDate.now());
@@ -125,7 +125,7 @@ public class OrderServiceTest {
         try {
             orderService.getOrderByDateAndStore(LocalDate.parse("2020-01-01"), "TestApotheke");
         } catch (OrderNotFound e) {
-            assertEquals(e.getMessage(), "No such order Found!");
+            assertEquals(e.getMessage(), "No such Order found!");
         }
 
         verify(orderRepository, times(0)).findByDateAndStoreName(LocalDate.now(), "TestApotheke");

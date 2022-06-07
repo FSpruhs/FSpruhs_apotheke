@@ -14,6 +14,8 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
+    private final String ERROR_MESSAGE_ORDER_NOT_FOUND = "No such Order found!";
+
     private final OrderRepository orderRepository;
 
     private final OrderBuilder orderBuilder;
@@ -45,7 +47,7 @@ public class OrderService {
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound("No such order Found!");
+            throw new OrderNotFound(ERROR_MESSAGE_ORDER_NOT_FOUND);
         }
     }
 
@@ -61,7 +63,7 @@ public class OrderService {
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound("No such order Found!");
+            throw new OrderNotFound(ERROR_MESSAGE_ORDER_NOT_FOUND);
         }
     }
 
@@ -78,7 +80,7 @@ public class OrderService {
         if (!listMedication.isEmpty()) {
             return listMedication;
         } else {
-            throw new OrderNotFound("No such order Found!");
+            throw new OrderNotFound(ERROR_MESSAGE_ORDER_NOT_FOUND);
         }
     }
 
@@ -93,7 +95,7 @@ public class OrderService {
         if (optionalOrder.isPresent()) {
             orderRepository.deleteById(id);
         } else {
-            throw new OrderNotFound("No such order Found!");
+            throw new OrderNotFound(ERROR_MESSAGE_ORDER_NOT_FOUND);
         }
     }
 
@@ -110,7 +112,7 @@ public class OrderService {
             optionalOrder.get().setOrderStatus(orderStatus);
             orderRepository.save(optionalOrder.get());
         } else {
-            throw new OrderNotFound("No such order Found!");
+            throw new OrderNotFound(ERROR_MESSAGE_ORDER_NOT_FOUND);
         }
     }
 
