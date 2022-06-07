@@ -46,7 +46,7 @@ public class AllUsersController {
         try {
             return new ResponseEntity<>(medicationService.getMedicationByName(name), HttpStatus.OK);
         } catch (MedicationNotfound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -62,7 +62,7 @@ public class AllUsersController {
         try {
             return new ResponseEntity<>(medicationService.getMedicationById(id), HttpStatus.OK);
         } catch (MedicationNotfound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -30,6 +30,11 @@ public class PharmaciesStoreController {
     /**
      * Sends an Order Object with the order of a Medication.
      *
+     * required attributes:
+     * long pharmaCentralNumber
+     * int number
+     * String storeName
+     *
      * @param order an Object of the type Order.
      * @return HttpStatus.OK if success,
      *      HttpStatus.NOT_FOUND if Medication not found,
@@ -43,11 +48,11 @@ public class PharmaciesStoreController {
             medicationService.order(order);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (MedicationNotfound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (NotEnoughMedicationInStock e) {
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 }

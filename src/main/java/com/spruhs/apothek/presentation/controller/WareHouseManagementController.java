@@ -34,6 +34,11 @@ public class WareHouseManagementController {
     /**
      * Invokes the method of the model to add a new Medication to the Database.
      *
+     * required attributes:
+     * String name
+     * String ingredients
+     * String producer
+     *
      * @param medication JSON Object of a Medication with valid check
      * @return HttpStatus Ok
      */
@@ -68,7 +73,7 @@ public class WareHouseManagementController {
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (MedicationNotfound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -86,7 +91,7 @@ public class WareHouseManagementController {
             medicationService.updateMedication(id, number);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (MedicationNotfound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -116,7 +121,7 @@ public class WareHouseManagementController {
 
 
         if ((date == null && storeName == null)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("no date and store name", HttpStatus.BAD_REQUEST);
         }
 
         Iterable<OrderJPA> orders;
@@ -130,7 +135,7 @@ public class WareHouseManagementController {
             }
             return new ResponseEntity<>(orders, HttpStatus.OK);
         } catch (OrderNotFound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -147,7 +152,7 @@ public class WareHouseManagementController {
             orderService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (OrderNotFound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -164,9 +169,9 @@ public class WareHouseManagementController {
             orderService.updateStatus(id, orderStatus);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(OrderNotFound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
